@@ -9,6 +9,7 @@ events.out.tfevents*
 
 /model
 /venv
+/finn_image
 /retrain_logs
 
 flower_photos.tar

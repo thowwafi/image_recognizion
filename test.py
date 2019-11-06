@@ -111,7 +111,8 @@ def main():
                     # write the result on the image
                     writeResultOnImage(openCVImage, strClassification + ", " + "{0:.2f}".format(scoreAsAPercent) + "% confidence")
                     # finally we can show the OpenCV image
-                    cv2.imshow(fileName, openCVImage)
+                    resizedImage = ResizeWithAspectRatio(openCVImage, width=2000)
+                    cv2.imshow(fileName, resizedImage)
                     # mark that we've show the most likely prediction at this point so the additional information in
                     # this if statement does not show again for this image
                     onMostLikelyPrediction = False
@@ -187,7 +188,20 @@ def writeResultOnImage(openCVImage, resultText):
     # write the text on the image
     cv2.putText(openCVImage, resultText, (lowerLeftTextOriginX, lowerLeftTextOriginY), fontFace, fontScale, SCALAR_BLUE, fontThickness)
 # end function
+def ResizeWithAspectRatio(image, width=None, height=None, inter=cv2.INTER_AREA):
+    dim = None
+    (h, w) = image.shape[:2]
 
+    if width is None and height is None:
+        return image
+    if width is None:
+        r = height / float(h)
+        dim = (int(w * r), height)
+    else:
+        r = width / float(w)
+        dim = (width, int(h * r))
+
+    return cv2.resize(image, dim, interpolation=inter)
 #######################################################################################################################
 if __name__ == "__main__":
     main()
